@@ -1,0 +1,114 @@
+/* style.css - clean, mobile-first styles for "For My Favorite Human" quiz */
+:root{
+  --bg1:#ff6fb5; /* pink */
+  --bg2:#7b2cbf; /* purple */
+  --bg3:#d6a4ff; /* lavender */
+  --card-bg: rgba(255,255,255,0.06);
+  --card-border: rgba(255,255,255,0.12);
+  --accent: #ffd6e8;
+  --glass-blur: 10px;
+  --radius: 18px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:#fff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  background:#111;
+  overflow:hidden;
+}
+
+/* animated gradient background */
+.bg-gradient{
+  position:fixed;inset:0;z-index:-3;
+  background:linear-gradient(120deg,var(--bg1),var(--bg2),var(--bg3));
+  background-size:600% 600%;
+  animation:gradientShift 18s ease infinite;
+  filter:contrast(1.05) saturate(1.05);
+}
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* particle area holds hearts and sparkles */
+#particle-wrap{position:fixed;inset:0;pointer-events:none;z-index:-2;}
+
+/* main container centers the card */
+.container{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;
+}
+
+.card{
+  width:100%;max-width:920px;background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:var(--radius);backdrop-filter: blur(var(--glass-blur));-webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow:0 10px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+  padding:28px 32px;position:relative;overflow:visible;transform-origin:center;
+  animation:cardEntrance 700ms cubic-bezier(.2,.9,.2,1);
+}
+@keyframes cardEntrance{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+
+.card-header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:12px}
+.title{font-size:1.4rem;margin:0 0 6px;font-weight:700;letter-spacing:0.4px}
+.subtitle{font-size:0.92rem;margin:0;color:rgba(255,255,255,0.9);opacity:0.95}
+
+.progress-area{margin:14px 0 6px}
+.progress-text{font-size:0.9rem;opacity:0.95;margin-bottom:6px}
+.progress-bar{height:10px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg, #ffd1e6,#ff79c6);transition:width 400ms ease}
+
+.question-area{min-height:96px;display:flex;align-items:center;justify-content:center;padding:16px}
+.question{font-size:1.15rem;text-align:center;margin:0;padding:8px;line-height:1.3}
+
+.answers{display:flex;gap:16px;align-items:center;justify-content:center;position:relative;padding:14px;min-height:160px;flex-wrap:wrap}
+.btn{background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.08);color:#fff;padding:12px 16px;border-radius:14px;font-size:1rem;cursor:pointer;transition:transform 180ms ease, box-shadow 180ms ease;box-shadow:0 6px 18px rgba(0,0,0,0.35);}
+.btn:active{transform:translateY(2px)}
+.btn.small{padding:8px 12px;border-radius:10px;font-size:0.9rem}
+
+.btn.positive{background:linear-gradient(180deg,#ffdeee,#ffd1e6);color:#2a0836;border:1px solid rgba(255,255,255,0.6)}
+.btn.negative{background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));color:#fff}
+
+/* escape message tooltip */
+.escape-msg{position:absolute;left:0;transform:translateX(-50%);background:rgba(0,0,0,0.45);padding:8px 12px;border-radius:12px;font-size:0.9rem;opacity:0;pointer-events:none;transition:opacity 200ms ease,transform 200ms ease}
+.escape-msg.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
+
+.feedback{min-height:48px;display:flex;align-items:center;justify-content:center;margin-top:8px}
+.feedback .msg{background:linear-gradient(90deg,#ffd1e6, #ff79c6);color:#381032;padding:8px 12px;border-radius:999px;font-weight:600;box-shadow:0 6px 18px rgba(123,44,191,0.16);opacity:0;transform:translateY(6px) scale(.98);animation:popMsg 520ms forwards}
+@keyframes popMsg{to{opacity:1;transform:none}}
+
+/* modal */
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);z-index:40;visibility:hidden;opacity:0;transition:opacity 240ms ease,visibility 240ms}
+.modal[aria-hidden="false"]{visibility:visible;opacity:1}
+.modal-content{background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.06);text-align:center}
+
+/* final confetti canvas and big heart */
+.final-screen{display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px}
+.big-heart{font-size:5rem;animation:beat 1s infinite;transform-origin:center}
+@keyframes beat{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+
+/* sparkles around card */
+.card-sparkles{position:absolute;inset:0;pointer-events:none}
+.card-sparkles::before, .card-sparkles::after{content:'';position:absolute;border-radius:50%;width:8px;height:8px;background:rgba(255,255,255,0.16);filter:blur(6px);opacity:0.6}
+.card-sparkles::before{top:12px;left:18px}
+.card-sparkles::after{bottom:20px;right:28px}
+
+/* footer */
+.site-footer{margin-top:20px;color:rgba(255,255,255,0.7);font-size:0.9rem;text-align:center}
+
+/* responsiveness */
+@media(min-width:600px){
+  .card{padding:28px}
+  .title{font-size:1.6rem}
+  .question{font-size:1.2rem}
+}
+
+/* accessibility focus */
+.btn:focus{outline:2px solid #ffb6da;outline-offset:3px}
+
+/* small helper */
+.hidden{display:none}
